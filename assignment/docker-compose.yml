@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  lab1:
+    build:
+      context: .
+      dockerfile: lab1/Dockerfile
+    ports:
+      - "8001:8001"
+    container_name: fastapi-lab1
+    networks:
+      - fastapi-network
+
+  lab2:
+    build:
+      context: .
+      dockerfile: lab2/Dockerfile
+    ports:
+      - "8002:8002"
+    container_name: fastapi-lab2
+    volumes:
+      - db-volume:/app/data
+    environment:
+      - DB_PATH=/app/data
+    networks:
+      - fastapi-network
+
+volumes:
+  db-volume:
+    driver: local
+
+networks:
+  fastapi-network:
+    driver: bridge
