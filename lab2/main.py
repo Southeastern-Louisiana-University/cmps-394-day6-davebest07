@@ -4,14 +4,12 @@ from typing import Optional, List
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 
-# Database setup
 DATABASE_URL = "sqlite:///./items.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-# Database model
 class ItemDB(Base):
     __tablename__ = "items"
     
@@ -20,13 +18,11 @@ class ItemDB(Base):
     description = Column(String)
 
 
-# Create tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 
-# Pydantic models
 class ItemRequest(BaseModel):
     name: str
     description: Optional[str] = None
@@ -40,7 +36,6 @@ class ItemResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
